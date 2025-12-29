@@ -1,6 +1,6 @@
 import application.MessageHandler
 import cats.effect.{IO, IOApp}
-import domain.Message
+import domain.MessageDocument
 import doobie.Transactor
 import infra.KafkaListener
 import org.apache.kafka.clients.consumer.ConsumerConfig
@@ -36,7 +36,7 @@ object Main extends IOApp.Simple {
       ConsumerConfig.GROUP_ID_CONFIG -> "orb-weaver-group",
       ConsumerConfig.MAX_POLL_RECORDS_CONFIG -> "1")
     )
-      .start("probe_outcomes", (_, msg) => Message(msg).pipe(handler.handle(tx)))
+      .start("probe_outcomes", (_, msg) => MessageDocument(msg).pipe(handler.handle(tx)))
       .handleErrorWith(t => baseLogger.error(t)(s"Kafka listener failed: ${t.getMessage}"))
   }
 }
