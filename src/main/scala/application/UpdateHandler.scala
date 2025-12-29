@@ -1,15 +1,15 @@
 package application
 
 import cats.effect.IO
-import domain.MessageDocument
+import domain.AlertUpdate
 import commons.Logging.*
-import data.MessageRepository
+import data.MessageLogRepository
 import doobie.Transactor
 import doobie.implicits.toConnectionIOOps
 import org.typelevel.log4cats.StructuredLogger
 
-class MessageHandler(l: StructuredLogger[IO], repository: MessageRepository) {
-  def handle (tx: Transactor[IO]) (msg: MessageDocument): IO[Unit] = {
+class UpdateHandler(l: StructuredLogger[IO], repository: MessageLogRepository) {
+  def handle (tx: Transactor[IO]) (msg: AlertUpdate): IO[Unit] = {
     l.withContext(Map("message_hash" -> msg.hash)) { logger =>
       for {
         _ <- logger.info(s"Received message: ${msg.content}")
@@ -21,4 +21,4 @@ class MessageHandler(l: StructuredLogger[IO], repository: MessageRepository) {
       } yield ()
     }
   }
-}
+} 

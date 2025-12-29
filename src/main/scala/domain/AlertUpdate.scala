@@ -5,7 +5,7 @@ import commons.Sha256
 
 import scala.util.chaining.scalaUtilChainingOps
 
-trait MessageDocument {
+trait AlertUpdate {
   def hash: String
   
   def content: String
@@ -15,7 +15,7 @@ trait MessageDocument {
   def evaluate(expression: String): Boolean
 }
 
-private class JsonMessageDocument(jsonDoc: DocumentContext) extends MessageDocument {
+private class JsonAlertUpdate(jsonDoc: DocumentContext) extends AlertUpdate {
 
   override def getFieldValue(jsonPath: String): Option[String] = {
     try
@@ -46,10 +46,10 @@ private class JsonMessageDocument(jsonDoc: DocumentContext) extends MessageDocum
     Sha256.digestHexUtf8(jsonDoc.jsonString())
 }
 
-object MessageDocument {
-  def apply(json: String): MessageDocument =
+object AlertUpdate {
+  def apply(json: String): AlertUpdate =
     if (json.trim.isEmpty)
-      JsonPath.parse("{}").pipe(new JsonMessageDocument(_))
+      JsonPath.parse("{}").pipe(new JsonAlertUpdate(_))
     else
-      JsonPath.parse(json).pipe(new JsonMessageDocument(_))
+      JsonPath.parse(json).pipe(new JsonAlertUpdate(_))
 }

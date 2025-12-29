@@ -1,6 +1,6 @@
-import application.MessageHandler
+import application.UpdateHandler
 import cats.effect.{IO, IOApp}
-import domain.MessageDocument
+import domain.AlertUpdate
 import doobie.Transactor
 import infra.KafkaListener
 import org.apache.kafka.clients.consumer.ConsumerConfig
@@ -15,7 +15,7 @@ object Main extends IOApp.Simple {
 
     val loggerFactory = Slf4jFactory.create[IO]
     val baseLogger: StructuredLogger[IO] = loggerFactory.getLogger
-    val repository = data.MessageRepository()
+    val repository = data.MessageLogRepository()
 
     val tx: Transactor[IO] =
       Transactor.fromDriverManager[IO](
@@ -26,7 +26,7 @@ object Main extends IOApp.Simple {
         logHandler = None
       )
 
-    val handler = new MessageHandler(
+    val handler = new UpdateHandler(
       StructuredLogger.withContext(baseLogger)(Map("topic" -> "probe_outcomes")),
       repository
     )
@@ -36,7 +36,7 @@ object Main extends IOApp.Simple {
       ConsumerConfig.GROUP_ID_CONFIG -> "orb-weaver-group",
       ConsumerConfig.MAX_POLL_RECORDS_CONFIG -> "1")
     )
-      .start("probe_outcomes", (_, msg) => MessageDocument(msg).pipe(handler.handle(tx)))
+      .start("probe_outcomes", (_, msg) => AlertUpdate(msg).pipe(handler.handle(tx)))
       .handleErrorWith(t => baseLogger.error(t)(s"Kafka listener failed: ${t.getMessage}"))
   }
 }
