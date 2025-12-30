@@ -1,39 +1,65 @@
-var builder = WebApplication.CreateBuilder(args);
+using Serilog;
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(new ConfigurationBuilder()
+        .AddJsonFile("appsettings.json")
+        .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Local"}.json",
+            optional: true)
+        .Build())
+    .CreateBootstrapLogger();
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+try
 {
-    app.MapOpenApi();
-}
+    Log.Information("Starting web application");
 
-app.UseHttpsRedirection();
+    var builder = WebApplication.CreateBuilder(args);
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    builder.Host.UseSerilog((context, services, configuration) => configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services));
 
-app.MapGet("/weatherforecast", () =>
+    builder.Services.AddOpenApi();
+
+    var app = builder.Build();
+
+    if (app.Environment.IsDevelopment())
     {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast");
+        app.MapOpenApi();
+    }
 
-app.Run();
+    app.UseSerilogRequestLogging();
+
+    app.UseHttpsRedirection();
+
+    var summaries = new[]
+    {
+        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    };
+
+    app.MapGet("/weatherforecast", () =>
+        {
+            var forecast = Enumerable.Range(1, 5).Select(index =>
+                    new WeatherForecast
+                    (
+                        DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                        Random.Shared.Next(-20, 55),
+                        summaries[Random.Shared.Next(summaries.Length)]
+                    ))
+                .ToArray();
+            return forecast;
+        })
+        .WithName("GetWeatherForecast");
+
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
