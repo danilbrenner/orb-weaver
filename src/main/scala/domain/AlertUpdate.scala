@@ -2,12 +2,11 @@ package domain
 
 import com.jayway.jsonpath.{DocumentContext, JsonPath, PathNotFoundException}
 import commons.Sha256
-
 import scala.util.chaining.scalaUtilChainingOps
 
 trait AlertUpdate {
   def hash: String
-  
+
   def content: String
 
   def getFieldValue(jsonPath: String): Option[String]
@@ -15,7 +14,7 @@ trait AlertUpdate {
   def evaluate(expression: String): Boolean
 }
 
-private class JsonAlertUpdate(jsonDoc: DocumentContext) extends AlertUpdate {
+private case class JsonAlertUpdate(jsonDoc: DocumentContext) extends AlertUpdate {
 
   override def getFieldValue(jsonPath: String): Option[String] = {
     try
@@ -38,10 +37,10 @@ private class JsonAlertUpdate(jsonDoc: DocumentContext) extends AlertUpdate {
       case _: PathNotFoundException => false
     }
   }
-  
+
   override def content: String =
     jsonDoc.jsonString()
-  
+
   override def hash: String =
     Sha256.digestHexUtf8(jsonDoc.jsonString())
 }
@@ -49,7 +48,8 @@ private class JsonAlertUpdate(jsonDoc: DocumentContext) extends AlertUpdate {
 object AlertUpdate {
   def apply(json: String): AlertUpdate =
     if (json.trim.isEmpty)
-      JsonPath.parse("{}").pipe(new JsonAlertUpdate(_))
+      JsonPath.parse("{}").pipe(JsonAlertUpdate(_))
     else
-      JsonPath.parse(json).pipe(new JsonAlertUpdate(_))
+      JsonPath.parse(json).pipe(JsonAlertUpdate(_))
 }
+

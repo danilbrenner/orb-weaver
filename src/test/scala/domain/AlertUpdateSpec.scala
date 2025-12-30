@@ -1,4 +1,4 @@
-package commons
+package domain
 
 import domain.AlertUpdate
 import org.scalatest.matchers.should.Matchers
