@@ -4,6 +4,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DC0A4831-E6C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrbWeaver.Host", "src\OrbWeaver.Host\OrbWeaver.Host.csproj", "{8EA1B122-14C4-4CBB-A6CD-F684D002438A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrbWeaver.Handler", "src\OrbWeaver.Handler\OrbWeaver.Handler.csproj", "{6E7656A8-96B8-4258-BD7F-8F5B87F02B04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,8 +16,13 @@ Global
 		{8EA1B122-14C4-4CBB-A6CD-F684D002438A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EA1B122-14C4-4CBB-A6CD-F684D002438A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EA1B122-14C4-4CBB-A6CD-F684D002438A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E7656A8-96B8-4258-BD7F-8F5B87F02B04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E7656A8-96B8-4258-BD7F-8F5B87F02B04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E7656A8-96B8-4258-BD7F-8F5B87F02B04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E7656A8-96B8-4258-BD7F-8F5B87F02B04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8EA1B122-14C4-4CBB-A6CD-F684D002438A} = {DC0A4831-E6C1-4126-B00D-1295B34834F7}
+		{6E7656A8-96B8-4258-BD7F-8F5B87F02B04} = {DC0A4831-E6C1-4126-B00D-1295B34834F7}
 	EndGlobalSection
 EndGlobal

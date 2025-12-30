@@ -1,3 +1,5 @@
+using OrbWeaver.Handler;
+using OrbWeaver.Host.Consumer;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -19,7 +21,12 @@ try
         .ReadFrom.Services(services));
 
     builder.Services.AddOpenApi();
-
+    
+    builder
+        .Services
+        .AddOrbWeaverHandler()
+        .AddHostedService<KafkaConsumerService>();
+    
     var app = builder.Build();
 
     if (app.Environment.IsDevelopment())
