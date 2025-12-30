@@ -10,19 +10,5 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  flyway:
-    image: flyway/flyway:11.18-alpine
-    platform: linux/amd64
-    depends_on:
-      - data
-    command: ["-configFiles=/flyway/conf/flyway.conf"]
-    environment:
-      FLYWAY_URL: ${FLYWAY_URL}
-      FLYWAY_USER: ${POSTGRES_USER}
-      FLYWAY_PASSWORD: ${POSTGRES_PASSWORD}
-    volumes:
-      - ./data/migrations/sql:/flyway/sql
-      - ./data/migrations/flyway.conf:/flyway/conf/flyway.conf:ro
-
 volumes:
   postgres_data:
