@@ -1,0 +1,6 @@
+@OrbWeaver.Host_HostAddress = http://localhost:5129
+
+GET {{OrbWeaver.Host_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
