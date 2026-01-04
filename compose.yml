@@ -1,6 +1,7 @@
 services:
   data:
     image: postgres:18.1-alpine
+    container_name: orb_weather_data
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -10,5 +11,75 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  kafka:
+    image: confluentinc/cp-kafka:7.4.1
+    container_name: orb_weather_kafka
+    restart: unless-stopped
+    environment:
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,EXTERNAL://0.0.0.0:29092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_MIN_INSYNC_REPLICAS: 1
+      KAFKA_NUM_PARTITIONS: 1
+
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      
+      CLUSTER_ID: "fX7wfU7hRb2I5wCyHA00fA"
+    
+    # To generate a new CLUSTER_ID, run the following command:
+    #      docker run --rm confluentinc/cp-kafka:7.4.1 \
+    #       bash -c "kafka-storage random-uuid"
+
+    command:
+      - bash
+      - -lc
+      - |
+        if [ ! -f /var/lib/kafka/data/meta.properties ]; then
+          mkdir -p /var/lib/kafka/data
+          kafka-storage format --ignore-formatted \
+            --cluster-id "$CLUSTER_ID" \
+            --config /etc/kafka/kafka.properties
+        fi
+        exec /etc/confluent/docker/run
+    ports:
+      - "9092:29092"
+      - "9093:9093"
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    healthcheck:
+      test: [ "CMD", "bash", "-c", "kafka-broker-api-versions --bootstrap-server localhost:9092 >/dev/null 2>&1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:latest
+    container_name: orb_weather_kafdrop
+    restart: unless-stopped
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKERCONNECT: "orb_weather_kafka:9092"
+    ports:
+      - "9000:9000"
+
 volumes:
+  kafka-data:
   postgres_data:
+
+networks:
+  default:
+    name: orb_weather_network

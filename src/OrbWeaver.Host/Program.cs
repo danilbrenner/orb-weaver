@@ -1,3 +1,4 @@
+using OrbWeaver.Data;
 using OrbWeaver.Handler;
 using OrbWeaver.Host.Consumer;
 using Serilog;
@@ -21,6 +22,9 @@ try
         .ReadFrom.Services(services));
 
     builder.Services.AddOpenApi();
+    
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    builder.Services.AddData(connectionString!);
     
     builder
         .Services

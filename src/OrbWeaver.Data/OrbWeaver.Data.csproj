@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <PackageReference Include="EFCore.NamingConventions" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\OrbWeaver.Handler\OrbWeaver.Handler.csproj" />
+    </ItemGroup>
+
+</Project>

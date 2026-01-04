@@ -1,0 +1,30 @@
+<Project>
+  
+  <!-- Common properties for all projects -->
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!-- Enable Central Package Management -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <!-- Common build properties -->
+  <PropertyGroup>
+    <Authors>OrbWeaver Team</Authors>
+    <Company>OrbWeaver</Company>
+    <Product>OrbWeaver</Product>
+    <Copyright>Copyright © 2026</Copyright>
+  </PropertyGroup>
+
+  <!-- Deterministic builds for better reproducibility -->
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+</Project>
