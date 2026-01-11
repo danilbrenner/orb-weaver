@@ -7,8 +7,6 @@ public class OrbWeaverDbContextFactory : IDesignTimeDbContextFactory<OrbWeaverDb
 {
     public OrbWeaverDbContext CreateDbContext(string[] args)
     {
-        // Build DbContextOptions with a hardcoded connection string for design-time
-        // EF Core migrations will use this when running commands
         var optionsBuilder = new DbContextOptionsBuilder<OrbWeaverDbContext>();
         optionsBuilder
             .UseNpgsql()

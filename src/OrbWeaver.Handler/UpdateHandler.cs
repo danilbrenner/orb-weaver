@@ -19,17 +19,17 @@ public class UpdateHandler(
         logger.LogInformation("Handling update with key: {Key}, rawUpdate: {RawUpdate}", key, rawUpdate);
 
         var update = UpdateMessage.Create(rawUpdate);
-        
+
         var affected = await updateLogRepository.Log(update, cancellationToken);
-        
-        if(affected == 0)
+
+        if (affected == 0)
         {
             logger.LogInformation("Skipping duplicate update, hash = {Hash}", update.Hash);
             return;
         }
-        
+
         await Task.Delay(10, cancellationToken);
-        
+
         logger.LogInformation("Update handled successfully for key: {Key}", key);
     }
 }
