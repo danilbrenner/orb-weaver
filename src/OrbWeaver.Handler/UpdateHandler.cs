@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Collections.Immutable;
+using Microsoft.Extensions.Logging;
 using OrbWeaver.Domain;
 using OrbWeaver.Handler.Abstractions;
 
@@ -11,7 +12,9 @@ public interface IUpdateHandler
 
 public class UpdateHandler(
     IUpdateLogRepository updateLogRepository,
-    ILogger<UpdateHandler> logger)
+    IAlertStateRepository alertStateRepository,
+    ILogger<UpdateHandler> logger,
+    INotificationDispatcher notificationDispatcher)
     : IUpdateHandler
 {
     public async Task Handle(string key, string rawUpdate, CancellationToken cancellationToken = default)
@@ -28,7 +31,17 @@ public class UpdateHandler(
             return;
         }
 
-        await Task.Delay(10, cancellationToken);
+        var alerts = await alertStateRepository.GetState(key, cancellationToken);
+
+        var (newAlerts, notificationActions) =
+            alerts.Select(alert => AlertReducer.Reduce(alert, update))
+                 .Aggregate(
+                     (ImmutableList<Alert>.Empty, ImmutableList<Notification>.Empty),
+                     (acc, pair) => (acc.Item1.Add(pair.Item1), acc.Item2.AddRange(pair.Item2))
+                 );
+
+        await alertStateRepository.SaveState(newAlerts, cancellationToken);
+        await notificationDispatcher.Dispatch(notificationActions, cancellationToken);
 
         logger.LogInformation("Update handled successfully for key: {Key}", key);
     }
