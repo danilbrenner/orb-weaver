@@ -17,9 +17,7 @@ dotnet ef migrations add InitWithUpdateLog \
 ### Apply migrations to the database
 
 ```bash
-dotnet ef database update \
-         --project ./src/OrbWeaver.Data/OrbWeaver.Data.csproj \
-         --connection <COnNECTION_STRING>
+dotnet ef database update --project ./src/OrbWeaver.Data/OrbWeaver.Data.csproj --connection "<CONNECTION_STRING>"
 ```
 
 ### Prerequisites
