@@ -16,10 +16,8 @@ public static class DataSetup
                 .UseSnakeCaseNamingConvention();
         });
 
-        return services.AddDbContext<OrbWeaverDbContext>(options =>
-        {
-            options.UseNpgsql(connectionString);
-        })
-            .AddScoped<IUpdateLogRepository, UpdateLogRepository>();
+        return
+            services.AddDbContext<OrbWeaverDbContext>(options => { options.UseNpgsql(connectionString); })
+                .AddScoped<IUpdateLogRepository, UpdateLogRepository>();
     }
 }

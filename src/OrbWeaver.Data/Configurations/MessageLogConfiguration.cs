@@ -4,7 +4,6 @@ using OrbWeaver.Data.DataModel;
 
 namespace OrbWeaver.Data.Configurations;
 
-
 public class MessageLogConfiguration : IEntityTypeConfiguration<MessageLog>
 {
     public void Configure(EntityTypeBuilder<MessageLog> builder)

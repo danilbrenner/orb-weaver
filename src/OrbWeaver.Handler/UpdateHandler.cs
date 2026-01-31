@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Collections.Immutable;
+using Microsoft.Extensions.Logging;
 using OrbWeaver.Domain;
 using OrbWeaver.Handler.Abstractions;
 
@@ -20,16 +21,8 @@ public class UpdateHandler(
 
         var update = UpdateMessage.Create(rawUpdate);
 
-        var affected = await updateLogRepository.Log(update, cancellationToken);
-
-        if (affected == 0)
-        {
-            logger.LogInformation("Skipping duplicate update, hash = {Hash}", update.Hash);
-            return;
-        }
-
-        await Task.Delay(10, cancellationToken);
-
-        logger.LogInformation("Update handled successfully for key: {Key}", key);
+        _ = await updateLogRepository.Log(update, cancellationToken);
+        
+        logger.LogInformation("Update successfully logged");
     }
 }

@@ -10,7 +10,7 @@ public abstract record UpdateMessage
     public abstract string Hash { get; }
     public abstract bool Evaluate(string path);
     public abstract string? Get(string path);
-    
+
     public static UpdateMessage Create(string message)
         => new JsonUpdateMessage(JObject.Parse(message), ComputeSha256(message));
 
@@ -35,9 +35,9 @@ internal record JsonUpdateMessage : UpdateMessage
         Hash = hash;
     }
 
-    public override bool Evaluate(string path) 
+    public override bool Evaluate(string path)
         => PayloadObject.SelectTokens(path).Any();
 
-    public override string? Get(string path) 
+    public override string? Get(string path)
         => PayloadObject.SelectToken(path)?.Value<string>();
 }
