@@ -18,6 +18,6 @@ public static class DataSetup
 
         return
             services.AddDbContext<OrbWeaverDbContext>(options => { options.UseNpgsql(connectionString); })
-                .AddScoped<IUpdateLogRepository, UpdateLogRepository>();
+                .AddScoped<IMessageLogRepository, MessageLogRepository>();
     }
 }
