@@ -7,21 +7,19 @@ namespace OrbWeaver.Handler;
 
 public interface IUpdateHandler
 {
-    Task Handle(string key, string rawUpdate, CancellationToken cancellationToken = default);
+    Task Handle(string key, string rawMessage, CancellationToken cancellationToken = default);
 }
 
 public class UpdateHandler(
-    IUpdateLogRepository updateLogRepository,
+    IMessageLogRepository messageLogRepository,
     ILogger<UpdateHandler> logger)
     : IUpdateHandler
 {
-    public async Task Handle(string key, string rawUpdate, CancellationToken cancellationToken = default)
+    public async Task Handle(string key, string rawMessage, CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Handling update with key: {Key}, rawUpdate: {RawUpdate}", key, rawUpdate);
+        logger.LogInformation("Logging update with key");
 
-        var update = UpdateMessage.Create(rawUpdate);
-
-        _ = await updateLogRepository.Log(update, cancellationToken);
+        _ = await messageLogRepository.Log(new Message(rawMessage), cancellationToken);
         
         logger.LogInformation("Update successfully logged");
     }
