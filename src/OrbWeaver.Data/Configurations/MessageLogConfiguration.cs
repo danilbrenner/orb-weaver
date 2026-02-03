@@ -13,6 +13,10 @@ public class MessageLogConfiguration : IEntityTypeConfiguration<MessageLog>
         builder.Property(ml => ml.Hash).IsRequired().HasMaxLength(64);
         builder.Property(ml => ml.Payload).IsRequired().HasMaxLength(10000);
         builder.Property(ml => ml.LoggedAt).IsRequired().HasDefaultValueSql("now()");
+        builder.Property(ml => ml.Timestamp).IsRequired().HasDefaultValueSql("now()");
+        
+        builder.HasIndex(ml => ml.Payload).HasMethod("gin");
+        builder.HasIndex(ml => ml.Timestamp);
     }
 }
 

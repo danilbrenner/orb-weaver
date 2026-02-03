@@ -3,6 +3,7 @@ using System;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OrbWeaver.Data;
@@ -12,9 +13,11 @@ using OrbWeaver.Data;
 namespace OrbWeaver.Data.Migrations
 {
     [DbContext(typeof(OrbWeaverDbContext))]
-    partial class OrbWeaverDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260203151144_AlertStateAdded")]
+    partial class AlertStateAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,11 +61,6 @@ namespace OrbWeaver.Data.Migrations
                         .HasDefaultValue(0)
                         .HasColumnName("status");
 
-                    b.Property<uint>("Version")
-                        .IsConcurrencyToken()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
-
                     b.HasKey("AlertId")
                         .HasName("pk_alerts");
 
@@ -88,22 +86,8 @@ namespace OrbWeaver.Data.Migrations
                         .HasColumnType("jsonb")
                         .HasColumnName("payload");
 
-                    b.Property<DateTime>("Timestamp")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("timestamp")
-                        .HasDefaultValueSql("now()");
-
                     b.HasKey("Hash")
                         .HasName("pk_messages_log");
-
-                    b.HasIndex("Payload")
-                        .HasDatabaseName("ix_messages_log_payload");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Payload"), "gin");
-
-                    b.HasIndex("Timestamp")
-                        .HasDatabaseName("ix_messages_log_timestamp");
 
                     b.ToTable("messages_log", (string)null);
                 });

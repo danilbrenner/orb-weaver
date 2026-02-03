@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using OrbWeaver.Domain;
-using OrbWeaver.Handler.Abstractions;
+using OrbWeaver.Application.Abstractions;
 
 namespace OrbWeaver.Data.Repositories;
 
@@ -12,8 +12,8 @@ public class MessageLogRepository(IDbContextFactory<OrbWeaverDbContext> contextF
         return await context.Database
             .ExecuteSqlInterpolatedAsync
             ($"""
-              insert into messages_log(hash, payload) 
-              values ({message.Hash}, {message.Payload})
+              insert into messages_log(hash, payload, timestamp) 
+              values ({message.Hash}, {message.Payload}, {message.Timestamp})
               on conflict (hash) do nothing;
             """, cancellationToken: cancellationToken);
     }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OrbWeaver.Data.Repositories;
-using OrbWeaver.Handler.Abstractions;
+using OrbWeaver.Application.Abstractions;
 
 namespace OrbWeaver.Data;
 
@@ -18,6 +18,7 @@ public static class DataSetup
 
         return
             services.AddDbContext<OrbWeaverDbContext>(options => { options.UseNpgsql(connectionString); })
-                .AddScoped<IMessageLogRepository, MessageLogRepository>();
+                .AddScoped<IMessageLogRepository, MessageLogRepository>()
+                .AddScoped<IAlertsRepository, AlertsRepository>();
     }
 }

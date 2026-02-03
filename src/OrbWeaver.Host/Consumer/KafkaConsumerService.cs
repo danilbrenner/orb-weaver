@@ -1,5 +1,7 @@
 using Confluent.Kafka;
-using OrbWeaver.Handler;
+using OrbWeaver.Application;
+using OrbWeaver.Application.Abstractions;
+using OrbWeaver.Application.Handler;
 
 namespace OrbWeaver.Host.Consumer;
 
@@ -54,8 +56,11 @@ public class KafkaConsumerService(
                         consumeResult.Offset.Value,
                         consumeResult.Message.Key,
                         consumeResult.Message.Value);
-
-                    updateHandler.Handle(consumeResult.Message.Key, consumeResult.Message.Value, stoppingToken).GetAwaiter().GetResult();
+                    
+                    updateHandler
+                        .Handle(consumeResult.Message.Key, consumeResult.Message.Value, consumeResult.Message.Timestamp.UtcDateTime, stoppingToken)
+                        .GetAwaiter()
+                        .GetResult();
 
                     _consumer.StoreOffset(consumeResult);
                     _consumer.Commit(consumeResult);

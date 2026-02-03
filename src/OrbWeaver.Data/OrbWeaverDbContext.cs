@@ -5,6 +5,8 @@ namespace OrbWeaver.Data;
 
 public class OrbWeaverDbContext(DbContextOptions<OrbWeaverDbContext> options) : DbContext(options)
 {
+    public DbSet<AlertData> Alerts { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

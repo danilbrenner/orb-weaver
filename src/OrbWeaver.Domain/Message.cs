@@ -8,11 +8,17 @@ public record Message
 {
     public JsonDocument Payload { get; }
     public string Hash { get; }
+    public DateTime Timestamp { get; }
 
-    public Message(string raw)
+    public Message(string raw, DateTime timestamp)
     {
+        Timestamp = timestamp;
         Payload = JsonDocument.Parse(raw);
-        Hash = ComputeSha256(raw);
+        Hash = ComputeSha256(
+            new StringBuilder(raw)
+                .Append(timestamp)
+                .ToString()
+        );
     }
 
     private static string ComputeSha256(string input)
