@@ -1,6 +1,6 @@
 using OrbWeaver.Domain;
 
-namespace OrbWeaver.Handler.Abstractions;
+namespace OrbWeaver.Application.Abstractions;
 
 public interface IMessageLogRepository
 {

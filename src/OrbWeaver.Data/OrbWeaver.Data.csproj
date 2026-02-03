@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\OrbWeaver.Handler\OrbWeaver.Handler.csproj" />
+      <ProjectReference Include="..\OrbWeaver.Application\OrbWeaver.Application.csproj" />
     </ItemGroup>
 
 </Project>

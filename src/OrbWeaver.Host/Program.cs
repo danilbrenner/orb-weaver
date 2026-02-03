@@ -1,7 +1,9 @@
 using OrbWeaver.Data;
-using OrbWeaver.Handler;
+using OrbWeaver.Application;
 using OrbWeaver.Host.Consumer;
 using Serilog;
+using Hangfire;
+using Hangfire.PostgreSql;
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(new ConfigurationBuilder()
@@ -26,6 +28,20 @@ try
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     builder.Services.AddData(connectionString!);
     
+    builder.Services.AddHangfire(configuration => configuration
+        .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+        .UseSimpleAssemblyNameTypeSerializer()
+        .UseRecommendedSerializerSettings()
+        .UsePostgreSqlStorage(options => 
+            options.UseNpgsqlConnection(connectionString), 
+            new PostgreSqlStorageOptions
+            {
+                SchemaName = "hangfire"
+            }))
+        ;
+    
+    builder.Services.AddHangfireServer();
+    
     builder
         .Services
         .AddOrbWeaverHandler()
@@ -41,6 +57,13 @@ try
     app.UseSerilogRequestLogging();
 
     app.UseHttpsRedirection();
+    
+    app.UseHangfireDashboard();
+    
+    RecurringJob.AddOrUpdate<OrbWeaver.Application.Jobs.RunAlertsJob>(
+        "run-alerts-job",
+        job => job.Execute(CancellationToken.None),
+        Cron.Minutely);
 
     app.Run();
 }

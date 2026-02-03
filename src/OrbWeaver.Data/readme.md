@@ -8,7 +8,7 @@ This solution uses:
 ### Create a migration for a specific DbContext
 
 ```bash
-dotnet ef migrations add InitWithUpdateLog \
+dotnet ef migrations add <MigratioName> \
          --context OrbWeaverDbContext \
          --project ./src/OrbWeaver.Data/OrbWeaver.Data.csproj \
          --startup-project ./src/OrbWeaver.Host/OrbWeaver.Host.csproj
