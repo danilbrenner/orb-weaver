@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using OrbWeaver.Domain;
 using OrbWeaver.Application.Abstractions;
+using OrbWeaver.Domain;
 
-namespace OrbWeaver.Data.Repositories;
+namespace OrbWeaver.Infrastructure.Repositories;
 
 public class MessageLogRepository(IDbContextFactory<OrbWeaverDbContext> contextFactory) : IMessageLogRepository
 {

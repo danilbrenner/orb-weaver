@@ -3,18 +3,22 @@ using System;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OrbWeaver.Data;
+using OrbWeaver.Infrastructure;
 
 #nullable disable
 
 namespace OrbWeaver.Data.Migrations
 {
     [DbContext(typeof(OrbWeaverDbContext))]
-    partial class OrbWeaverDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260203201520_MessageLoggingEnhancements")]
+    partial class MessageLoggingEnhancements
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,7 +27,7 @@ namespace OrbWeaver.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("OrbWeaver.Data.DataModel.AlertData", b =>
+            modelBuilder.Entity("OrbWeaver.Infrastructure.DataModel.AlertData", b =>
                 {
                     b.Property<Guid>("AlertId")
                         .ValueGeneratedOnAdd()
@@ -69,7 +73,7 @@ namespace OrbWeaver.Data.Migrations
                     b.ToTable("alerts", (string)null);
                 });
 
-            modelBuilder.Entity("OrbWeaver.Data.DataModel.MessageLog", b =>
+            modelBuilder.Entity("OrbWeaver.Infrastructure.DataModel.MessageLog", b =>
                 {
                     b.Property<string>("Hash")
                         .HasMaxLength(64)

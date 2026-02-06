@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using OrbWeaver.Data.DataModel;
+using OrbWeaver.Infrastructure.DataModel;
 
-namespace OrbWeaver.Data;
+namespace OrbWeaver.Infrastructure;
 
 public class OrbWeaverDbContext(DbContextOptions<OrbWeaverDbContext> options) : DbContext(options)
 {

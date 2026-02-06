@@ -7,14 +7,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OrbWeaver.Data;
+using OrbWeaver.Infrastructure;
 
 #nullable disable
 
 namespace OrbWeaver.Data.Migrations
 {
     [DbContext(typeof(OrbWeaverDbContext))]
-    [Migration("20260203151144_AlertStateAdded")]
-    partial class AlertStateAdded
+    [Migration("20260104192609_InitWithUpdateLog")]
+    partial class InitWithUpdateLog
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,48 +27,7 @@ namespace OrbWeaver.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("OrbWeaver.Data.DataModel.AlertData", b =>
-                {
-                    b.Property<Guid>("AlertId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("alert_id");
-
-                    b.Property<string>("Expression")
-                        .IsRequired()
-                        .HasColumnType("jsonpath")
-                        .HasColumnName("expression");
-
-                    b.Property<string>("Filter")
-                        .IsRequired()
-                        .HasColumnType("jsonpath")
-                        .HasColumnName("filter");
-
-                    b.Property<DateTime>("LastHandledTs")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_handled_ts")
-                        .HasDefaultValueSql("now()");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
-                        .HasColumnName("name");
-
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0)
-                        .HasColumnName("status");
-
-                    b.HasKey("AlertId")
-                        .HasName("pk_alerts");
-
-                    b.ToTable("alerts", (string)null);
-                });
-
-            modelBuilder.Entity("OrbWeaver.Data.DataModel.MessageLog", b =>
+            modelBuilder.Entity("OrbWeaver.Infrastructure.DataModel.MessageLog", b =>
                 {
                     b.Property<string>("Hash")
                         .HasMaxLength(64)

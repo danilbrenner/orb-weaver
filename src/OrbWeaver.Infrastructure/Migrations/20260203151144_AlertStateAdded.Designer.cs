@@ -7,14 +7,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OrbWeaver.Data;
+using OrbWeaver.Infrastructure;
 
 #nullable disable
 
 namespace OrbWeaver.Data.Migrations
 {
     [DbContext(typeof(OrbWeaverDbContext))]
-    [Migration("20260203201520_MessageLoggingEnhancements")]
-    partial class MessageLoggingEnhancements
+    [Migration("20260203151144_AlertStateAdded")]
+    partial class AlertStateAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,7 +27,7 @@ namespace OrbWeaver.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("OrbWeaver.Data.DataModel.AlertData", b =>
+            modelBuilder.Entity("OrbWeaver.Infrastructure.DataModel.AlertData", b =>
                 {
                     b.Property<Guid>("AlertId")
                         .ValueGeneratedOnAdd()
@@ -61,18 +62,13 @@ namespace OrbWeaver.Data.Migrations
                         .HasDefaultValue(0)
                         .HasColumnName("status");
 
-                    b.Property<uint>("Version")
-                        .IsConcurrencyToken()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
-
                     b.HasKey("AlertId")
                         .HasName("pk_alerts");
 
                     b.ToTable("alerts", (string)null);
                 });
 
-            modelBuilder.Entity("OrbWeaver.Data.DataModel.MessageLog", b =>
+            modelBuilder.Entity("OrbWeaver.Infrastructure.DataModel.MessageLog", b =>
                 {
                     b.Property<string>("Hash")
                         .HasMaxLength(64)
@@ -91,22 +87,8 @@ namespace OrbWeaver.Data.Migrations
                         .HasColumnType("jsonb")
                         .HasColumnName("payload");
 
-                    b.Property<DateTime>("Timestamp")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("timestamp")
-                        .HasDefaultValueSql("now()");
-
                     b.HasKey("Hash")
                         .HasName("pk_messages_log");
-
-                    b.HasIndex("Payload")
-                        .HasDatabaseName("ix_messages_log_payload");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Payload"), "gin");
-
-                    b.HasIndex("Timestamp")
-                        .HasDatabaseName("ix_messages_log_timestamp");
 
                     b.ToTable("messages_log", (string)null);
                 });

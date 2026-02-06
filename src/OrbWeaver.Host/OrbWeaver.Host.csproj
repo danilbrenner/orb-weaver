@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\OrbWeaver.Data\OrbWeaver.Data.csproj" />
+      <ProjectReference Include="..\OrbWeaver.Infrastructure\OrbWeaver.Infrastructure.csproj" />
       <ProjectReference Include="..\OrbWeaver.Application\OrbWeaver.Application.csproj" />
     </ItemGroup>
 

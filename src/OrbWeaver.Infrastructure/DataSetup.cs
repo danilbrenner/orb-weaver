@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using OrbWeaver.Data.Repositories;
 using OrbWeaver.Application.Abstractions;
+using OrbWeaver.Infrastructure.Repositories;
 
-namespace OrbWeaver.Data;
+namespace OrbWeaver.Infrastructure;
 
 public static class DataSetup
 {

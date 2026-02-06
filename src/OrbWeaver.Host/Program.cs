@@ -4,6 +4,7 @@ using OrbWeaver.Host.Consumer;
 using Serilog;
 using Hangfire;
 using Hangfire.PostgreSql;
+using OrbWeaver.Infrastructure;
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(new ConfigurationBuilder()
