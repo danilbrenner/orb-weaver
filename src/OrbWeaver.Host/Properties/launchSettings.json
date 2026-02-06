@@ -7,8 +7,7 @@
       "launchBrowser": false,
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Local",
-        "ConnectionStrings__DefaultConnection": "Host=localhost;Port=5435;Database=weaver_db;Username=postgres;Password=postgres"
+        "ASPNETCORE_ENVIRONMENT": "Local"
       }
     }
   }
