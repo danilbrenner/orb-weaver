@@ -1,4 +1,4 @@
-namespace OrbWeaver.Data.DataModel;
+namespace OrbWeaver.Infrastructure.DataModel;
 
 public class AlertData
 {

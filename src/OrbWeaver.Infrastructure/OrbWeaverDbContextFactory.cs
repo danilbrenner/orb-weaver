@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace OrbWeaver.Data;
+namespace OrbWeaver.Infrastructure;
 
 public class OrbWeaverDbContextFactory : IDesignTimeDbContextFactory<OrbWeaverDbContext>
 {

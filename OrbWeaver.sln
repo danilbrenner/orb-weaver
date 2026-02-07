@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrbWeaver.Host", "src\OrbWe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrbWeaver.Application", "src\OrbWeaver.Application\OrbWeaver.Application.csproj", "{6E7656A8-96B8-4258-BD7F-8F5B87F02B04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrbWeaver.Data", "src\OrbWeaver.Data\OrbWeaver.Data.csproj", "{59B78936-BEC7-4E0A-8928-33208F89BAE9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrbWeaver.Infrastructure", "src\OrbWeaver.Infrastructure\OrbWeaver.Infrastructure.csproj", "{59B78936-BEC7-4E0A-8928-33208F89BAE9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrbWeaver.Domain", "src\OrbWeaver.Domain\OrbWeaver.Domain.csproj", "{1D322FDD-298A-4B0B-9CB0-C5B557CCDB2A}"
 EndProject

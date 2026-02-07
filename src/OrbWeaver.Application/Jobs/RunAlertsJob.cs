@@ -1,11 +1,10 @@
 using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
 using OrbWeaver.Application.Abstractions;
-using OrbWeaver.Domain;
 
 namespace OrbWeaver.Application.Jobs;
 
-public class RunAlertsJob(ILogger<RunAlertsJob> logger, IAlertsRepository alertsRepository)
+public class RunAlertsJob(ILogger<RunAlertsJob> logger, INotificationDispatcher notificationDispatcher, IAlertsRepository alertsRepository)
 {
     public async Task Execute(CancellationToken cancellationToken = default)
     {
@@ -28,6 +27,16 @@ public class RunAlertsJob(ILogger<RunAlertsJob> logger, IAlertsRepository alerts
                 .ToImmutableList();
 
         await alertsRepository.UpdateAlertStates(updatedAlertStates, cancellationToken);
+        if(!notifications.IsEmpty)
+        {
+            logger.LogInformation("Dispatching {Count} notifications", notifications.Count);
+            foreach (var notification in notifications)
+            {
+                await notificationDispatcher.SendNotification(notification, cancellationToken);
+                logger.LogInformation("Dispatched notification for alert '{AlertName}' with status '{Status}'",
+                    notification.AlertName, notification.NewStatus);
+            }
+        }
 
         logger.LogInformation("Run alertsJob completed");
     }

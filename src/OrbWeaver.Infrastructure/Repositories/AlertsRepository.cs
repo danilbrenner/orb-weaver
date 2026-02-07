@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using OrbWeaver.Application.Abstractions;
 using OrbWeaver.Domain;
 
-namespace OrbWeaver.Data.Repositories;
+namespace OrbWeaver.Infrastructure.Repositories;
 
 internal class AlertStateAggregate
 {

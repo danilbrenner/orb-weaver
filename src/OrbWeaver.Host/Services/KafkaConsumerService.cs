@@ -1,9 +1,7 @@
 using Confluent.Kafka;
-using OrbWeaver.Application;
 using OrbWeaver.Application.Abstractions;
-using OrbWeaver.Application.Handler;
 
-namespace OrbWeaver.Host.Consumer;
+namespace OrbWeaver.Host.Services;
 
 public class KafkaConsumerService(
     ILogger<KafkaConsumerService> logger,

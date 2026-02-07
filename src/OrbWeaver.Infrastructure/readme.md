@@ -28,3 +28,26 @@ Ensure EF Core CLI tools are installed:
 dotnet tool restore
 ```
 
+## Telegram Bot
+
+The application includes a Telegram bot listener that responds to commands.
+
+### Setup
+
+1. Configure your Telegram bot token in `appsettings.json`:
+```json
+{
+  "Telegram": {
+    "BotToken": "your-bot-token-here",
+    "ChatId": "your-chat-id-here"
+  }
+}
+```
+
+2. To get your chat ID, start the bot and send `/start` command. The bot will respond with your chat ID.
+
+### Features
+
+- **`/start` command**: Returns your chat ID that can be used in the configuration for receiving notifications.
+
+

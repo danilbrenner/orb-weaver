@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OrbWeaver.Data.DataModel;
+using OrbWeaver.Infrastructure.DataModel;
 
-namespace OrbWeaver.Data.Configurations;
+namespace OrbWeaver.Infrastructure.Configurations;
 
 public class AlertDataConfiguration : IEntityTypeConfiguration<AlertData>
 {

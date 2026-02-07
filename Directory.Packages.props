@@ -31,6 +31,9 @@
   <ItemGroup Label="Messaging">
     <PackageVersion Include="Confluent.Kafka" Version="2.12.0" />
   </ItemGroup>
+  <ItemGroup Label="Telegram">
+    <PackageVersion Include="Telegram.Bot" Version="22.0.0" />
+  </ItemGroup>
   <ItemGroup Label="Hangfire">
     <PackageVersion Include="Hangfire.AspNetCore" Version="1.8.16" />
     <PackageVersion Include="Hangfire.Core" Version="1.8.16" />
