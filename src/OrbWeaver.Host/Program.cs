@@ -1,9 +1,8 @@
-using OrbWeaver.Data;
 using OrbWeaver.Application;
-using OrbWeaver.Host.Consumer;
 using Serilog;
 using Hangfire;
 using Hangfire.PostgreSql;
+using OrbWeaver.Host.Services;
 using OrbWeaver.Infrastructure;
 
 Log.Logger = new LoggerConfiguration()
@@ -28,6 +27,7 @@ try
     
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     builder.Services.AddData(connectionString!);
+    builder.Services.AddNotifications(builder.Configuration);
     
     builder.Services.AddHangfire(configuration => configuration
         .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
@@ -46,7 +46,8 @@ try
     builder
         .Services
         .AddOrbWeaverHandler()
-        .AddHostedService<KafkaConsumerService>();
+        .AddHostedService<KafkaConsumerService>()
+        .AddHostedService<TelegramConsumerService>();
 
     var app = builder.Build();
 

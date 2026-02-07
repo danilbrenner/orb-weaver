@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrbWeaver.Application.Abstractions;
+using OrbWeaver.Infrastructure.Notification;
 using OrbWeaver.Infrastructure.Repositories;
 
 namespace OrbWeaver.Infrastructure;
@@ -21,4 +23,11 @@ public static class DataSetup
                 .AddScoped<IMessageLogRepository, MessageLogRepository>()
                 .AddScoped<IAlertsRepository, AlertsRepository>();
     }
+    
+    public static IServiceCollection AddNotifications(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<TelegramOptions>(configuration.GetSection(TelegramOptions.SectionName));
+        return services.AddSingleton<INotificationDispatcher, NotificationDispatcher>();
+    }
 }
+
