@@ -3,21 +3,21 @@
 This solution uses:
 
 * **Startup project:** `OrbWeaver.Host`
-* **Data / migrations project:** `OrbWeaver.Data`
+* **Data / migrations project:** `OrbWeaver.Infrastructure`
 
 ### Create a migration for a specific DbContext
 
 ```bash
 dotnet ef migrations add <MigratioName> \
          --context OrbWeaverDbContext \
-         --project ./src/OrbWeaver.Data/OrbWeaver.Data.csproj \
+         --project ./src/OrbWeaver.Infrastructure/OrbWeaver.Infrastructure.csproj \
          --startup-project ./src/OrbWeaver.Host/OrbWeaver.Host.csproj
 ```
 
 ### Apply migrations to the database
 
 ```bash
-dotnet ef database update --project ./src/OrbWeaver.Data/OrbWeaver.Data.csproj --connection "<CONNECTION_STRING>"
+dotnet ef database update --project ./src/OrbWeaver.Infrastructure/OrbWeaver.Infrastructure.csproj --connection "<CONNECTION_STRING>"
 ```
 
 ### Prerequisites
