@@ -2,6 +2,7 @@ using OrbWeaver.Application;
 using Serilog;
 using Hangfire;
 using Hangfire.PostgreSql;
+using OrbWeaver.Host;
 using OrbWeaver.Host.Services;
 using OrbWeaver.Infrastructure;
 
@@ -60,7 +61,10 @@ try
 
     app.UseHttpsRedirection();
     
-    app.UseHangfireDashboard();
+    app.UseHangfireDashboard("", new DashboardOptions
+    {
+        Authorization = [new AllowAllDashboardAuthorizationFilter()]
+    });
     
     RecurringJob.AddOrUpdate<OrbWeaver.Application.Jobs.RunAlertsJob>(
         "run-alerts-job",
